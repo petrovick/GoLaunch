@@ -4,12 +4,40 @@ const handle = require('express-async-handler')
 
 const routes = express.Router()
 
+const authMiddleware = require('./app/middlewares/auth')
+
 const controllers = require('./app/controllers')
+const validators = require('./app/validators')
 
-
-
-//TEST
+// TEST
 routes.get('/', controllers.TestController.index)
 
+/**
+ * Users & Sessions
+ */
+routes.post(
+  '/user/create',
+  // validate(validators.User),
+  handle(controllers.UserController.save)
+)
+routes.post(
+  '/session/login',
+  // validate(validators.User),
+  handle(controllers.SessionController.login)
+)
 
-module.exports = routes;
+/**
+ * From now on Authentication is required
+ */
+routes.use(authMiddleware)
+
+/**
+ * List of Gamers
+ */
+routes.post('/game/add', handle(controllers.GameController.addGame))
+
+routes.post('/gamer/addpoint', handle(controllers.GamerController.addPoints))
+routes.get('/gamer/listall', handle(controllers.GamerController.listAll))
+routes.get('/game/list', handle(controllers.GameController.list))
+
+module.exports = routes
