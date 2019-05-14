@@ -59,6 +59,13 @@ class GamerController {
 
     return res.json(gamers)
   }
+
+  async getGamer (req, res) {
+    console.log('Entrou aqui no getGamer')
+    console.log(`Gamer userId:${req.userId}`)
+    const gamer = await Gamer.findOne({ user: req.userId })
+    return res.json(gamer)
+  }
 }
 
 module.exports = new GamerController()
