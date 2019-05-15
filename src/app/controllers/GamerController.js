@@ -63,9 +63,9 @@ class GamerController {
   async getGamer (req, res) {
     console.log('Entrou aqui no getGamer')
     console.log(`Gamer userId:${req.userId}`)
-    const gamer = await Gamer.findOne({ user: req.userId }).populate(
-      'games.game'
-    )
+    const gamer = await Gamer.findOne({ user: req.userId })
+      .populate('games.game')
+      .populate('user')
     console.log(gamer)
     return res.json(gamer)
   }
