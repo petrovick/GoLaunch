@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const Youch = require('youch')
 const validate = require('express-validation')
 const databaseConfig = require('./config/database')
+const cors = require('cors')
 
 class App {
   constructor () {
@@ -29,6 +30,7 @@ class App {
   }
 
   routes () {
+    this.express.use(cors)
     this.express.use(require('./routes'))
   }
 
