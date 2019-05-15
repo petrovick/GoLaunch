@@ -1,53 +1,55 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const express = require('express')
-const mongoose = require('mongoose')
-const Youch = require('youch')
-const validate = require('express-validation')
-const databaseConfig = require('./config/database')
+const express = require("express");
+const mongoose = require("mongoose");
+const Youch = require("youch");
+const validate = require("express-validation");
+const databaseConfig = require("./config/database");
+const cors = require("cors");
 
 class App {
-  constructor () {
-    this.express = express()
-    this.isDev = true // process.env.NODE_ENV !== 'production'
+  constructor() {
+    this.express = express();
+    this.isDev = true; // process.env.NODE_ENV !== 'production'
 
-    this.middlewares()
-    this.database()
-    this.routes()
+    this.middlewares();
+    this.database();
+    this.routes();
   }
 
-  database () {
+  database() {
     mongoose.connect(databaseConfig.uri, {
       useCreateIndex: true,
       useNewUrlParser: true
-    })
+    });
   }
 
-  middlewares () {
+  middlewares() {
     // this.express.use(Sentry.Handlers.requetHandler())
-    this.express.use(express.json())
+    this.express.use(express.json());
   }
 
-  routes () {
-    this.express.use(require('./routes'))
+  routes() {
+    this.express.use(cors());
+    this.express.use(require("./routes"));
   }
 
-  exception () {
+  exception() {
     this.express.use(async (err, req, res, next) => {
       if (err instanceof validate.ValidationError) {
-        return res.state(err.status).json(err)
+        return res.state(err.status).json(err);
       }
 
-      if (process.env.NODE_ENV != 'production') {
-        const youch = new Youch(err, req)
-        return res.json(await youch.toJSON())
+      if (process.env.NODE_ENV != "production") {
+        const youch = new Youch(err, req);
+        return res.json(await youch.toJSON());
       }
 
       return res.status(err.status || 500).json({
-        error: 'User error connection.'
-      })
-    })
+        error: "User error connection."
+      });
+    });
   }
 }
 
-module.exports = new App().express
+module.exports = new App().express;
