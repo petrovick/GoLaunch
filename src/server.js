@@ -30,7 +30,7 @@ class App {
   }
 
   routes () {
-    // this.express.use(cors)
+    this.express.use(cors)
     this.express.use(require('./routes'))
   }
 
