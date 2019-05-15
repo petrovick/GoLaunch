@@ -13,7 +13,7 @@ class App {
     this.isDev = true; // process.env.NODE_ENV !== 'production'
 
     this.middlewares();
-    //this.database();
+    this.database();
     this.routes();
   }
 
@@ -30,7 +30,7 @@ class App {
   }
 
   routes() {
-    //this.express.use(cors());
+    this.express.use(cors());
     this.express.use(require("./routes"));
   }
 
