@@ -10,7 +10,7 @@ const authMiddleware = require('./app/middlewares/auth')
 const controllers = require('./app/controllers')
 const validators = require('./app/validators')
 
-this.express.use(cors)
+express.use(cors)
 
 // TEST
 routes.get('/', controllers.TestController.index)
