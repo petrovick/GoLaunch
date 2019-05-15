@@ -35,9 +35,14 @@ routes.use(authMiddleware)
  * List of Gamers
  */
 routes.post('/game/add', handle(controllers.GameController.addGame))
+routes.get('/game/list', handle(controllers.GameController.list))
 
+/**
+ * Gamer
+ */
 routes.post('/gamer/addpoint', handle(controllers.GamerController.addPoints))
 routes.get('/gamer/listall', handle(controllers.GamerController.listAll))
-routes.get('/game/list', handle(controllers.GameController.list))
+routes.get('/gamer/getgamer', handle(controllers.GamerController.getGamer))
+
 
 module.exports = routes
