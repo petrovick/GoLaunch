@@ -69,7 +69,9 @@ class GamerController {
             game: game
           }
         }
-      }).populate("user");
+      })
+        .populate("user")
+        .populate("games.game");
     } else {
       gamers = await Gamer.find()
         .populate("user")
