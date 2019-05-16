@@ -24,18 +24,20 @@ class GamerController {
     } else {
       let gameExists = false;
       gamer.games.forEach(item => {
-        if (item.game == game) {
+        if (item.game._id == game) {
           item.points = points;
           gameExists = true;
         }
       });
       debugger;
+
       if (!gameExists) {
         gamer.games.push({
           game,
           points
         });
       }
+
       Gamer.update(
         {
           _id: gamer._id
