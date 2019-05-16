@@ -7,7 +7,9 @@ class GamerController {
 
     const gamer = await Gamer.findOne({
       user: req.userId
-    });
+    })
+      .populate("user")
+      .populate("games.game");
 
     if (!gamer) {
       gamer = await Gamer.create({
