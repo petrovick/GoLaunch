@@ -16,7 +16,7 @@ class GamerController {
         user: req.userId,
         games: [
           {
-            game: "5cda19888074ce1139752a4f",
+            game: game,
             points: 1
           }
         ]
@@ -29,6 +29,7 @@ class GamerController {
           gameExists = true;
         }
       });
+      debugger;
       if (!gameExists) {
         gamer.games.push({
           game,
