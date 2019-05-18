@@ -26,7 +26,7 @@ class GamerController {
       let gameExists = false
       let totalPoints = 0
       gamer.games.forEach(item => {
-        totalPoints += item.totalPoints
+        totalPoints += item.points
         if (item.game._id == game) {
           item.points = points
           gameExists = true
