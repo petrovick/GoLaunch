@@ -1,15 +1,15 @@
-const Gamer = require("../models/Gamer");
-const mongoose = require("mongoose");
+const Gamer = require('../models/Gamer')
+const mongoose = require('mongoose')
 
 class GamerController {
-  async addPoints(req, res) {
-    const { game, points } = req.body;
+  async addPoints (req, res) {
+    const { game, points } = req.body
 
     const gamer = await Gamer.findOne({
       user: req.userId
     })
-      .populate("user")
-      .populate("games.game");
+      .populate('user')
+      .populate('games.game')
 
     if (!gamer) {
       gamer = await Gamer.create({
@@ -19,23 +19,26 @@ class GamerController {
             game: game,
             points: 1
           }
-        ]
-      });
+        ],
+        totalPoints: 1
+      })
     } else {
-      let gameExists = false;
+      let gameExists = false
+      let totalPoints = 0
       gamer.games.forEach(item => {
+        totalPoints += item.totalPoints
         if (item.game._id == game) {
-          item.points = points;
-          gameExists = true;
+          item.points = points
+          gameExists = true
         }
-      });
-      debugger;
+      })
+      debugger
 
       if (!gameExists) {
         gamer.games.push({
           game,
           points
-        });
+        })
       }
 
       Gamer.update(
@@ -43,19 +46,20 @@ class GamerController {
           _id: gamer._id
         },
         {
-          games: gamer.games
+          games: gamer.games,
+          totalPoint: totalPoints
         },
         {
           multi: false
         },
-        function(err, numAffected) {
+        function (err, numAffected) {
           return res.json({
             gamer,
             error: err,
             numAffected
-          });
+          })
         }
-      );
+      )
     }
     /*
     if (!(await user.compareHash(password))) {
@@ -64,9 +68,9 @@ class GamerController {
 */
   }
 
-  async listAll(req, res) {
-    const { game } = req.query;
-    let gamers = [];
+  async listAll (req, res) {
+    const { game } = req.query
+    let gamers = []
     if (game) {
       gamers = await Gamer.find({
         games: {
@@ -75,28 +79,28 @@ class GamerController {
           }
         }
       })
-        .populate("user")
-        .populate("games.game");
+        .populate('user')
+        .populate('games.game')
     } else {
       gamers = await Gamer.find()
-        .populate("user")
-        .populate("games.game");
+        .populate('user')
+        .populate('games.game')
     }
 
-    return res.json(gamers);
+    return res.json(gamers)
   }
 
-  async getGamer(req, res) {
-    console.log("Entrou aqui no getGamer");
-    console.log(`Gamer userId:${req.userId}`);
+  async getGamer (req, res) {
+    console.log('Entrou aqui no getGamer')
+    console.log(`Gamer userId:${req.userId}`)
     const gamer = await Gamer.findOne({
       user: req.userId
     })
-      .populate("games.game")
-      .populate("user");
-    console.log(gamer);
-    return res.json(gamer);
+      .populate('games.game')
+      .populate('user')
+    console.log(gamer)
+    return res.json(gamer)
   }
 }
 
-module.exports = new GamerController();
+module.exports = new GamerController()
