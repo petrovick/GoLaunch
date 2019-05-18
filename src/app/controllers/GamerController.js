@@ -29,9 +29,9 @@ class GamerController {
         if (item.game._id == game) {
           item.points = points
           gameExists = true
-          totalPoints += points
+          totalPoints += parseInt(points)
         } else {
-          totalPoints += item.points
+          totalPoints += parseInt(item.points)
         }
       })
       debugger
